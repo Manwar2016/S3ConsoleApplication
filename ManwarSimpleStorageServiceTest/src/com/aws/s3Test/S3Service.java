@@ -2,19 +2,17 @@
  * This is a simple java project which is able to access the
  * AWS S3 service
  *  
- *  Manwar Singh © 2016
+ *  Manwar Singh Â© 2016
  * 
  */
-
-
-
-
 
 package com.aws.s3Test;
 import com.amazonaws.services.s3.*;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.Upload;
 
 import java.io.File;
 import java.util.List;
@@ -26,7 +24,7 @@ public class S3Service {
 	
 	
 	/*********************************************************************************
-	 * Author 			: Manwar Singh
+	 * Author 		: Manwar Singh
 	 * Method Name		: createS3Bucket()
 	 * Parameters		: String,AmazonS3
 	 * Return type		: Bucket	
@@ -49,7 +47,7 @@ public class S3Service {
 	}
 	
 	/*********************************************************************************
-	 * Author 			: Manwar Singh
+	 * Author 		: Manwar Singh
 	 * Method Name		: deleteS3Bucket()
 	 * Parameters		: String,AmazonS3
 	 * Return type		: boolean	
@@ -97,7 +95,7 @@ public class S3Service {
 	
 
 	/*********************************************************************************
-	 * Author 			: Manwar Singh
+	 * Author 		: Manwar Singh
 	 * Method Name		: listBucketObjects
 	 * Parameters		: String bucketName,AmazonS3 as
 	 * Return type		: void	
@@ -134,7 +132,7 @@ public class S3Service {
 	
 	
 	/*********************************************************************************
-	 * Author 			: Manwar Singh
+	 * Author 		: Manwar Singh
 	 * Method Name		: listingBuckets()]
 	 * Parameters		: AmazonS3
 	 * Return type		: void	
@@ -158,7 +156,27 @@ public class S3Service {
 		
 		System.out.println("***********************************************************************");	
 	}
-	
-	
 
+	
+	
+	
+	/*********************************************************************************
+	 * Author 		: Manwar Singh
+	 * Method Name		: uploadUsingMultiPart
+	 * Parameters		: String bucketName, String key, String filePath,AmazonS3 as
+	 * Return type		: void	
+	 * Description		: use the multi-part service to upload the file into bucket
+	 * Creation date	: 06/07/2016
+	 * Last modification	:  
+	 */
+	public void uploadUsingMultiPart(String bucketName, String key, String filePath,AmazonS3 as ) throws AmazonClientException, AmazonServiceException, InterruptedException
+	{
+		
+		TransferManager tm = new TransferManager(as);        
+        Upload upload = tm.upload(
+        	bucketName, key, new File(filePath));
+        	upload.waitForCompletion();
+            System.out.println("file uploaded successfully! ");
+	}
+	
 }
