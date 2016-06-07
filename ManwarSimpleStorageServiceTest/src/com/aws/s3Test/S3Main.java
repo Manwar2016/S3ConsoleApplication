@@ -45,6 +45,7 @@ public class S3Main {
 	        	System.out.println("3	: Delete existing Bucket");
 	        	System.out.println("4	: Upload the file in your bucket");
 	        	System.out.println("5	: listing the objects in your bucket");
+	        	System.out.println("6	: Use the multipart to  upload the file ");
 	        	System.out.println("9	: exit ");
 	        	choice = scanner.nextInt();
 	        	switch(choice)
@@ -55,17 +56,17 @@ public class S3Main {
 	        		case 2:
 	        			System.out.println("Please enter your bucket Name :");
 	        			bucketName = scanner.next();
-	        			service.createS3Bucket(bucketName, s3);
+	        			service.createS3Bucket(bucketName, s3);  //create new bucket
 	        			break;
 	        		case 3 :
 	        			System.out.println("Please enter your bucket name which you want to delete :");
 	        			bucketName = scanner.next();
-	        			service.deleteS3Bucket(bucketName, s3);
+	        			service.deleteS3Bucket(bucketName, s3);   //deletion of existing bucket
 	        			break;
 	        		case 4:
 	        			System.out.println("Enter the bucket name in which you wan to upload the file :");
 	        			bucketName = scanner.next();
-	        			if(!s3.doesBucketExist(bucketName))
+	        			if(!s3.doesBucketExist(bucketName))   //upload the file into existing bucket
 	        				{
 	        				System.err.println("Sorry! this bucket does not exist in your account");
 	        				continue;
@@ -79,7 +80,16 @@ public class S3Main {
 	        		case 5:
 	        			System.out.println("Enter the bucket name in which the contents you want see :");
 	        			bucketName = scanner.next();
-	        			service.listBucketObjects(bucketName, s3);
+	        			service.listBucketObjects(bucketName, s3);  //lis the contents of bucket
+	        			break;
+	        		case 6:
+	        			System.out.println("Enter the bucket name in which the contents you want see :");
+	        			bucketName = scanner.next();
+	        			System.out.println("Enter the key name for new file :");         //multipart upload file into bucket
+	        			key = scanner.next();
+	        			System.out.println("Enter the complete path of your file (eg : c:\\dir\\file.ext):");
+	        			filePath = scanner.next();
+	        			service.uploadUsingMultiPart(bucketName,key,filePath,s3);
 	        			break;
 	        		case 9:
 	        		    System.out.println("Thank you for using s3 service");
@@ -94,7 +104,10 @@ public class S3Main {
 	        {
 	        	System.err.println(ex.getMessage());
 	        	
-	        }
+	        } catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	        
 	        
 
